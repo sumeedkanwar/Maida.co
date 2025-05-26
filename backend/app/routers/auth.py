@@ -4,6 +4,7 @@ from ..models import TokenRequest
 
 router = APIRouter()
 
+
 @router.post("/token")
 async def create_token(request: TokenRequest):
     db = get_db()
