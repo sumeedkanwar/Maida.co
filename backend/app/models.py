@@ -21,4 +21,3 @@ class ModerationRequest(BaseModel):
 class ModerationResponse(BaseModel):
     is_safe: bool
     categories: dict  # e.g., {"violence": 0.1, "nudity": 0.05}
-    

@@ -33,4 +33,3 @@ async def check_image_safety(image_url: str) -> Dict[str, float]:
             status_code=500,
             detail=f"Error checking image: {str(e)}"
         )
-        
