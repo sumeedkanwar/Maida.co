@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class Token(BaseModel):
     token: str
     isAdmin: bool
@@ -14,9 +15,9 @@ class Usage(BaseModel):
 
 
 class ModerationRequest(BaseModel):
-    image_url: str  # For simplicity, we'll use image URLs instead of file uploads
+    image_url: str  # For simplicity, we'll use image URLs
 
 
 class ModerationResponse(BaseModel):
     is_safe: bool
-    categories: dict  # e.g., {"violence": 0.1, "nudity": 0.05, ...}
+    categories: dict  # e.g., {"violence": 0.1, "nudity": 0.05}

@@ -23,7 +23,13 @@ async def check_image_safety(image_url: str) -> Dict[str, float]:
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get("https://api.sightengine.com/1.0/check.json", params=params)
+            response = await client.get(
+                "https://api.sightengine.com/1.0/check.json",
+                params=params
+            )
             return response.json()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error checking image: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error checking image: {str(e)}"
+        )

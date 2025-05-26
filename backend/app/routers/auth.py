@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from ..dependencies import verify_admin, get_db
 from ..models import TokenRequest
 
+
 router = APIRouter()
 
 
