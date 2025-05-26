@@ -12,8 +12,7 @@ A FastAPI-based image moderation API with MongoDB for token and usage tracking, 
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd image-moderation-api
+   git clone <>
    ```
 
 2. Copy the example environment file:

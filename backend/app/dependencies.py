@@ -6,11 +6,15 @@ from datetime import datetime
 
 security = HTTPBearer()
 
+
 def get_db():
     client = MongoClient("mongodb://localhost:27017/")
     return client["moderation_db"]
 
-async def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
+
+async def verify_token(
+    credentials: HTTPAuthorizationCredentials = Security(security)
+):
     db = get_db()
     token = credentials.credentials
     token_doc = db.tokens.find_one({"token": token})
@@ -23,6 +27,7 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Security(secu
         "timestamp": datetime.utcnow()
     })
     return token_doc
+
 
 async def verify_admin(token_doc: dict = Depends(verify_token)):
     if not token_doc.get("isAdmin"):
