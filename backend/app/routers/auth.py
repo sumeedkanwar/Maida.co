@@ -6,16 +6,24 @@ import secrets
 
 router = APIRouter()
 
-@router.post("/tokens")
-async def create_token(isAdmin: bool = False, _=Depends(verify_admin)):
-    token = secrets.token_urlsafe(32)
+@router.post("/token")
+async def create_token(request: TokenRequest):
     db = get_db()
-    db.tokens.insert_one({
-        "token": token,
-        "isAdmin": isAdmin,
-        "createdAt": datetime.utcnow()
-    })
-    return {"token": token}
+    if request.apiKey != "test-key":  # Replace with real API key validation
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    
+    token = {"token": "test-token", "isAdmin": True}  # Generate real token
+    db.tokens.insert_one(token)
+    return token
+
+
+@router.get("/verify")
+async def verify_token(token: str):
+    db = get_db()
+    token_doc = db.tokens.find_one({"token": token})
+    if not token_doc:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return {"valid": True}
 
 @router.get("/tokens")
 async def list_tokens(_=Depends(verify_admin)):

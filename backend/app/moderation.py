@@ -1,27 +1,29 @@
-from PIL import Image
-import requests
-from io import BytesIO
+import httpx
 from fastapi import HTTPException
+import os
+from typing import Dict
 
-def moderate_image(image_url: str) -> dict:
-    """
-    Placeholder for image moderation logic.
-    Returns a mock content-safety report based on image metadata.
-    """
+
+async def check_image_safety(image_url: str) -> Dict[str, float]:
+    api_key = os.getenv("SIGHTENGINE_API_KEY")
+    api_secret = os.getenv("SIGHTENGINE_API_SECRET")
+
+    if not api_key or not api_secret:
+        raise HTTPException(
+            status_code=500,
+            detail="Moderation service credentials not configured"
+        )
+
+    params = {
+        "api_key": api_key,
+        "api_secret": api_secret,
+        "url": image_url,
+        "models": "nudity-2.0"
+    }
+
     try:
-        response = requests.get(image_url)
-        response.raise_for_status()
-        img = Image.open(BytesIO(response.content))
-        
-        # Mock moderation logic: Check image size and format
-        is_safe = img.size[0] < 2000 and img.size[1] < 2000 and img.format in ["JPEG", "PNG"]
-        categories = {
-            "violence": 0.0 if is_safe else 0.8,
-            "nudity": 0.0 if is_safe else 0.5,
-            "hate_symbols": 0.0 if is_safe else 0.3,
-            "self_harm": 0.0 if is_safe else 0.2,
-            "extremist": 0.0 if is_safe else 0.1
-        }
-        return {"is_safe": is_safe, "categories": categories}
+        async with httpx.AsyncClient() as client:
+            response = await client.get("https://api.sightengine.com/1.0/check.json", params=params)
+            return response.json()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Image processing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error checking image: {str(e)}")
