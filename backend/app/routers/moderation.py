@@ -3,7 +3,9 @@ from ..models import ModerationRequest, ModerationResponse
 from ..dependencies import verify_token
 from ..moderation import moderate_image
 
+
 router = APIRouter()
+
 
 @router.post("/", response_model=ModerationResponse)
 async def moderate_endpoint(

@@ -11,7 +11,6 @@ async def create_token(request: TokenRequest):
     db = get_db()
     if request.apiKey != "test-key":  # Replace with real API key validation
         raise HTTPException(status_code=401, detail="Invalid API key")
-    
     token = {"token": "test-token", "isAdmin": True}  # Generate real token
     db.tokens.insert_one(token)
     return token
