@@ -1,7 +1,6 @@
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pymongo import MongoClient
-import os
 from datetime import datetime
 
 security = HTTPBearer()

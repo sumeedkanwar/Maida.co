@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from ..models import Token
 from ..dependencies import verify_admin, get_db
-from datetime import datetime
-import secrets
+from ..models import TokenRequest
 
 router = APIRouter()
 
@@ -25,11 +23,13 @@ async def verify_token(token: str):
         raise HTTPException(status_code=401, detail="Invalid token")
     return {"valid": True}
 
+
 @router.get("/tokens")
 async def list_tokens(_=Depends(verify_admin)):
     db = get_db()
     tokens = list(db.tokens.find({}, {"_id": 0}))
     return tokens
+
 
 @router.delete("/tokens/{token}")
 async def delete_token(token: str, _=Depends(verify_admin)):

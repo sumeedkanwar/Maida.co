@@ -6,13 +6,16 @@ class Token(BaseModel):
     isAdmin: bool
     createdAt: datetime
 
+
 class Usage(BaseModel):
     token: str
     endpoint: str
     timestamp: datetime
 
+
 class ModerationRequest(BaseModel):
     image_url: str  # For simplicity, we'll use image URLs instead of file uploads
+
 
 class ModerationResponse(BaseModel):
     is_safe: bool
