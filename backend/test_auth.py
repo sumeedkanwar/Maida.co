@@ -79,3 +79,4 @@ def test_delete_token_not_found():
         headers={"Authorization": "Bearer admin-token"}
     )
     assert response.status_code == 404
+    
